@@ -1,0 +1,62 @@
+// ReelsSlider.tsx
+"use client";
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, FreeMode } from "swiper/modules";
+import ReelsCard from "./ReelsCard";
+import VideoModal from "./VideoModal";
+import type { Reel } from "@/data/reels";
+import styles from "./ReelsSlider.module.css";
+
+interface ReelsSliderProps {
+  reels: Reel[];
+}
+
+const ReelsSlider = ({ reels }: ReelsSliderProps) => {
+  // Kaunsa reel popup mein khula hai — null matlab koi nahi khula
+  const [activeReel, setActiveReel] = useState<Reel | null>(null);
+
+  return (
+    // ← Naya wrapper: yahi position: relative deta hai, taaki
+    // rounded-arrow.arrowY-center-position isi box ke andar center ho,
+    // page-level ancestor tak na bhaage
+    <div className={`${styles.sliderWrap} mx-0 px-0 `}>
+      <Swiper
+        modules={[Navigation, FreeMode]}
+        slidesPerView="auto"
+        spaceBetween={20}
+        freeMode={{ enabled: true, momentum: true }}
+        navigation={{
+          // NOTE: original code mein yeh do lines swapped thi — waisa hi rakha hai
+          prevEl: ".reels-prev__active",
+          nextEl: ".reels-next__active",
+        }}
+        slidesOffsetBefore={24}
+        slidesOffsetAfter={24}
+        className={styles.reelsSwiper}
+      >
+        {reels.map((reel) => (
+          <SwiperSlide key={reel.id}>
+            <ReelsCard reel={reel} onClick={() => setActiveReel(reel)} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <div className="rounded-arrow arrowY-center-position" style={{"width": "102%"}}>
+        <button className="reels-prev__active swiper_button _prev">
+          <i className="fa-solid fa-chevron-left" />
+        </button>
+        <button className="reels-next__active swiper_button _next custom-right">
+          <i className="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+
+      {/* Popup player — activeReel null hote hi unmount ho jayega */}
+      {activeReel && (
+        <VideoModal reel={activeReel} onClose={() => setActiveReel(null)} />
+      )}
+    </div>
+  );
+};
+
+export default ReelsSlider;

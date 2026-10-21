@@ -1,0 +1,131 @@
+body {
+  background-color: #f5f6f8;
+}
+
+/* Sidebar ki width ek jagah define kar di, taaki main content
+   ko bhi wahi value pata rahe (margin ke liye) */
+:root {
+  --sidebar-width: 260px;
+}
+
+/* ---------------------------------------------------------------
+   Layout wrapper (Bootstrap ke .container-fluid/.row ki jagah)
+   --------------------------------------------------------------- */
+.dashboard-layout {
+  min-height: 100vh;
+}
+
+/* ---------------------------------------------------------------
+   Sidebar - Desktop: hamesha screen par fixed rahega
+   --------------------------------------------------------------- */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  position: fixed; /* sticky ki jagah fixed — zyada reliable */
+  top: 0;
+  left: 0;
+  background-color: #1e2a38;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* agar nav links bahut zyada ho jayein toh sirf sidebar scroll ho */
+  z-index: 1000;
+}
+
+.sidebar a {
+  color: #c9d2dc;
+  text-decoration: none;
+  display: block;
+  padding: 10px 16px;
+  border-radius: 6px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #2f3f52;
+  color: #ffffff;
+}
+
+.sidebar-brand {
+  color: #ffffff;
+  font-weight: 700;
+  padding: 16px;
+  font-size: 1.2rem;
+}
+
+/* Main content ko sidebar ki width jitna left-margin de do,
+   taaki content sidebar ke neeche na chhupe */
+.dashboard-main {
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  padding: 1.5rem;
+}
+
+/* ---------------------------------------------------------------
+   Mobile override (screens smaller than 768px)
+   Sidebar ab fixed nahi rahega — normal top bar jaisa behave karega
+   --------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .sidebar-brand img {
+    height: 50px;
+  }
+
+  /* Nav links ko ek row mein horizontally scrollable bana do */
+  .sidebar nav {
+    flex-direction: row !important;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+  }
+
+  .sidebar nav a {
+    white-space: nowrap; /* text ek line mein rahe, wrap na ho */
+  }
+
+  /* User menu (naam + sign out) ko mobile par chota/compact rakho */
+  .sidebar-user-menu {
+    border-top: none;
+    padding: 8px 16px;
+  }
+
+  /* Mobile par main content ko left-margin ki zaroorat nahi */
+  .dashboard-main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
+
+/* Simple image preview grid used in the multi-image uploader */
+.image-preview-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-preview-item {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+}
+
+.image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
